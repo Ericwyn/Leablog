@@ -1,4 +1,4 @@
-package com.ericwyn.ezeorm.tool;
+package com.ericwyn.leablog.tools;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

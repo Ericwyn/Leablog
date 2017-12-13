@@ -1,9 +1,100 @@
 package com.ericwyn.leablog.api;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.ericwyn.leablog.api.entity.LoginMsg;
+import com.ericwyn.leablog.api.entity.NoteBookMsg;
+import com.ericwyn.leablog.api.entity.NoteMsg;
+import com.ericwyn.leablog.tools.LeablogConfig;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * Created by Ericwyn on 17-12-13.
  */
 public class LeanoteApi {
+    private String url= LeablogConfig.API_URL;
+    private static OkHttpClient client=new OkHttpClient();
+
+    public LoginMsg getToken(String email, String password){
+        Request request=new Request.Builder()
+                .get()
+                .url(url+"/auth/login?email="+email+"&pwd="+password)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                return JSONObject.parseObject(response.body().string(),LoginMsg.class);
+            }else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<NoteBookMsg> getAllNoteBook(LoginMsg loginMsg){
+        ///notebook/getNotebooks
+        Request request=new Request.Builder()
+                .get()
+                .url(url+"/notebook/getNotebooks?token="+loginMsg.getToken())
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                return JSONArray.parseArray(response.body().string(), NoteBookMsg.class);
+            }else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<NoteMsg> getAllNote(LoginMsg loginMsg,List<NoteBookMsg> list){
+        List<NoteMsg> noteList=new ArrayList<>();
+        System.out.println("一共有"+noteList.size());
+        for (int i=0;i<list.size();i++){
+            NoteBookMsg noteBookMsg=list.get(i);
+            Request request=new Request.Builder()
+                    .get()
+                    .url(url+"/note/getNotes?token="+loginMsg.getToken()+"&notebookId="+noteBookMsg.getNotebookId())
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(response.isSuccessful()){
+                        String resTemp=response.body().string();
+                        List<NoteMsg> noteMsgs = JSONArray.parseArray(resTemp, NoteMsg.class);
+                        noteList.addAll(noteMsgs);
+                        System.out.println("完成1本笔记");
+                    }
+                }
+            });
+            try {
+                Thread.sleep(50L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return noteList;
+    }
 
 
 
