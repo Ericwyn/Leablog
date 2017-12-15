@@ -28,6 +28,8 @@ public class ResController {
     private static LeanoteApi api;
     private static LoginMsg apiToken = null;
 
+    private boolean init=false;
+
     @RequestMapping(path = "/allblog",method = RequestMethod.GET)
     public ResJson getAllBlog(){
         return ResJson.successJson("成功",getBlogList());
@@ -35,18 +37,46 @@ public class ResController {
 
     //获取博客
     private List<NoteMsg> getBlogList(){
-        //判断时间
-        long nowTime = System.currentTimeMillis();
         if(api==null){
             api=new LeanoteApi();
         }
         if(apiToken==null){
             apiToken=api.getToken(LeablogConfig.MAIL, LeablogConfig.PASSWORD);
         }
-        //超过了时限，重新获取
-        if(1.0*(nowTime-lastUpdateTime)>timeInterve){
+        //初始化
+        if(!init){
+            Thread getBlogThread =new Thread(new GetBlogThreadRun());
+            getBlogThread.start();
+            while (getBlogThread.isAlive()){
+                try {
+                    Thread.sleep(10L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            init=true;
+            System.out.println("初始化完毕");
+        }else {
+            //判断时间
+            long nowTime = System.currentTimeMillis();
+            //超过了时限，重新获取，但是只是开启了一个获取线程，于是前台需要先刷新一下才会看到新的列表
+            //避免了卡顿
+            if(1.0*(nowTime-lastUpdateTime)>timeInterve){
+                new Thread(new GetBlogThreadRun()).start();
+            }
+        }
+        return noteList;
+    }
 
-            for (int i=1;i<3;i++){
+    class GetBlogThreadRun implements Runnable{
+        @Override
+        public void run() {
+            System.out.println("查询线程开启");
+            long oldTime=lastUpdateTime;
+            List<NoteMsg> oldList=new ArrayList<>();
+            oldList.addAll(noteList);
+            lastUpdateTime=System.currentTimeMillis();
+//            for (int i=1;i<3;i++){
                 try {
                     //重新获取笔记
                     List<NoteMsg> allNote = api.getAllNote(apiToken, api.getAllNoteBook(apiToken));
@@ -57,7 +87,7 @@ public class ResController {
                         }
                     }
                     noteList = api.getNoteContent(apiToken, blogList);
-                    lastUpdateTime=nowTime;
+
                     //排序
                     noteList.sort(new Comparator<NoteMsg>() {
                         @Override
@@ -65,20 +95,14 @@ public class ResController {
                             return o2.getCreatedTime().compareTo(o1.getCreatedTime());
                         }
                     });
-                    break;
+    //                    break;
                 }catch (Exception e){
                     e.printStackTrace();
+                    //回滚
+                    lastUpdateTime=oldTime;
+                    noteList=oldList;
                 }
-            }
-        }
-        return noteList;
-//        ArrayList<NoteMsg> noteMsgs = new ArrayList<>();
-//        noteMsgs.add(noteList.get(0));
-//        return noteMsgs;
-    }
 
-    //无论如何，先返回缓存，然后在请求
-    //滚动位置的记录
-    //侧边栏点击返回
-    //
+        }
+    }
 }

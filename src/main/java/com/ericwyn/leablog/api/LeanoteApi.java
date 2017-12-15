@@ -70,7 +70,7 @@ public class LeanoteApi {
 
     public List<NoteMsg> getAllNote(LoginMsg loginMsg,List<NoteBookMsg> list){
         List<NoteMsg> noteList=new ArrayList<>();
-        System.out.println("一共有"+noteList.size());
+//        System.out.println("一共有"+noteList.size());
         for (NoteBookMsg noteBookMsg : list) {
             Request request = new Request.Builder()
                     .get()
@@ -90,7 +90,7 @@ public class LeanoteApi {
                         String resTemp = response.body().string();
                         List<NoteMsg> noteMsgs = JSONArray.parseArray(resTemp, NoteMsg.class);
                         noteList.addAll(noteMsgs);
-                        System.out.println("完成1本笔记");
+//                        System.out.println("完成1本笔记");
 
                     }
                 }
@@ -112,7 +112,7 @@ public class LeanoteApi {
     }
 
     public List<NoteMsg> getNoteContent(LoginMsg loginMsg,List<NoteMsg> list){
-        System.out.println("一共有"+list.size());
+        System.out.println("一共有"+list.size()+"篇笔记文章需要获取");
         for (NoteMsg noteMsg : list) {
             Request request = new Request.Builder()
                     .get()
@@ -129,7 +129,7 @@ public class LeanoteApi {
                     if (response.isSuccessful()) {
                         String resTemp = response.body().string();
                         noteMsg.setContent(JSON.parseObject(resTemp).getString("Content"));
-                        System.out.println("完成1篇笔记内容详情"+client.dispatcher().runningCallsCount());
+//                        System.out.println("完成1篇笔记内容详情"+client.dispatcher().runningCallsCount());
                     }
                 }
             });

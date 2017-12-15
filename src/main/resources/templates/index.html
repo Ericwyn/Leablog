@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ericwyn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.9,  user-scalable=no">
+    <!--<link rel="stylesheet" href="css/mdui.min.css">-->
+    <!--&lt;!&ndash;<link rel="stylesheet" href="css/style.css">&ndash;&gt;-->
+    <!--<script src="js/mdui.min.js"></script>-->
+    <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
+    <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
+    <!--<script src="js/marked.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.7/marked.js"></script>
+</head>
+<body class="mdui-theme-accent-pink mdui-theme-primary-teal mdui-drawer-body-left mdui-appbar-with-toolbar">
+    <div class="mdui-container">
+        <header class="mdui-appbar mdui-appbar-fixed">
+            <div class="mdui-toolbar mdui-color-theme ">
+                <button  onclick="inst.toggle()" class="mdui-btn mdui-btn-icon" ><i class="mdui-icon material-icons">menu</i></button>
+                <p class="mdui-typo-headline">Ericwyn</p>
+                <div class="mdui-toolbar-spacer"></div>
+            </div>
+        </header>
+    </div>
+
+    <div class="mdui-container doc-container mdui-m-t-3" id="card_container">
+
+    </div>
+
+    <div class="mdui-container doc-container mdui-p-t-4" style="display: none;" id="blog_container">
+        <div class="mdui-card mdui-typo mdui-p-l-4 mdui-p-r-4" >
+            <div id="blog_card">
+
+            </div>
+            <div class="mdui-card-actions">
+                <i class="mdui-float-right mdui-icon material-icons mdui-m-r-1" onclick="hiddenBlog();showIndex();">&#xe5c4;</i>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/script.js"></script>
+<script>
+    //引入侧边栏，然后再引入手势操作
+    loadNavigation();
+    var inst=new mdui.Drawer('#drawer',{swipe:true});
+    loadIndexCard();
+</script>
+</html>
