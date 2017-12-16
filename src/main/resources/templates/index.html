@@ -9,8 +9,6 @@
     <!--<script src="js/mdui.min.js"></script>-->
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
-    <!--<script src="js/marked.js"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.7/marked.js"></script>
 </head>
 <body class="mdui-theme-accent-pink mdui-theme-primary-teal mdui-drawer-body-left mdui-appbar-with-toolbar">
     <div class="mdui-container">
@@ -33,9 +31,15 @@
 
             </div>
         </div>
-        <div class="mdui-col-xs-12 mdui-p-r-1 mdui-m-t-2 mdui-m-b-2 mdui-p-l-0">
-            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-left mdui-m-l-0 mdui-color-theme" onclick="gotoPath('/')">返回主页</button>
+
+        <div class="mdui-col-xs-6 mdui-p-r-1 mdui-m-t-2 mdui-m-b-2 mdui-p-l-0">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-left mdui-m-l-0 mdui-color" onclick="showShareCode()">分享文章</button>
         </div>
+
+        <div class="mdui-col-xs-6 mdui-p-r-1 mdui-m-t-2 mdui-m-b-2 mdui-p-l-0">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-right mdui-m-l-0 mdui-color-theme" onclick="gotoPath('/')">返回主页</button>
+        </div>
+
         <div class="mdui-col-xs-6 mdui-p-r-1 mdui-m-t-1 mdui-p-l-0">
             <div class="mdui-card mdui-typo mdui-p-a-1 mdui-hoverable" >
                 <div class="mdui-card-primary-subtitle" >上一篇</div>
@@ -56,6 +60,9 @@
     </div>
 </body>
 <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jr-qrcode@1.1.0/dist/jr-qrcode.js"></script>
+<!--<script src="js/marked.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.7/marked.js"></script>
 <script>
     var path= window.location.pathname;
     if( path==="/" ){

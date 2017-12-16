@@ -256,3 +256,15 @@ function gotoPath(path) {
     }
     window.location.href=path;
 }
+
+function showShareCode() {
+    mdui.dialog({
+        title: '本文分享链接',
+        content: '<img class="mdui-center" src = '+jrQrcode.getQrBase64(window.location.href)+' style="height:150px;width:150px" >',
+        buttons: [
+            {
+                text: '取消'
+            }
+        ]
+    });
+}
