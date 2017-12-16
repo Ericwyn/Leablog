@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="mdui-col-xs-12 mdui-p-r-1 mdui-m-t-2 mdui-m-b-2 mdui-p-l-0">
-            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-left mdui-m-l-0 mdui-color-theme" onclick="hiddenBlog();showIndex();">返回主页</button>
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-left mdui-m-l-0 mdui-color-theme" onclick="gotoPath('/')">返回主页</button>
         </div>
         <div class="mdui-col-xs-6 mdui-p-r-1 mdui-m-t-1 mdui-p-l-0">
             <div class="mdui-card mdui-typo mdui-p-a-1 mdui-hoverable" >
@@ -57,9 +57,19 @@
 </body>
 <script src="js/script.js"></script>
 <script>
-    //引入侧边栏，然后再引入手势操作
-    loadNavigation();
-    var inst=new mdui.Drawer('#drawer',{swipe:true});
-    loadIndexCard();
+    var path= window.location.pathname;
+    if( path==="/" ){
+        //引入侧边栏，然后再引入手势操作
+        loadNavigation();
+        var inst=new mdui.Drawer('#drawer',{swipe:true});
+        loadIndexCard();
+        if(window.sessionStorage.scrollTemp != null){
+            document.body.scrollTop=window.sessionStorage.scrollTemp;
+        }
+    }else {
+        loadNavigation();
+        var inst=new mdui.Drawer('#drawer',{swipe:true});
+        loadPathCard(path.replace("/",""));
+    }
 </script>
 </html>

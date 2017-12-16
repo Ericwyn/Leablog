@@ -83,6 +83,9 @@ public class ResController {
                     List<NoteMsg> blogList=new ArrayList<>();
                     for (NoteMsg note:allNote){
                         if(note.isBlog()){
+                            //去除返回数据当中的notebookid 数据和userid数据
+                            note.setNotebookId("");
+                            note.setUserId("");
                             blogList.add(note);
                         }
                     }

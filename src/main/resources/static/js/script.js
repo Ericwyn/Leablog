@@ -4,7 +4,7 @@ function loadNavigation() {
         "    <div class=\"mdui-drawer \" id=\"drawer\" >\n" +
         "        <ul class=\"mdui-list\">\n" +
         "            <li class=\"mdui-subheader\">博客</li>\n" +
-        "            <li class=\"mdui-list-item mdui-ripple\" onclick=\'hiddenBlog();showIndex();document.body.scrollTop=0;\'>\n" +
+        "            <li class=\"mdui-list-item mdui-ripple\" onclick=\"gotoPath('/');document.body.scrollTop=0;\">\n" +
         "                <i class=\"mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue\">&#xe88a;</i>\n" +
         "                <div class=\"mdui-list-item-content\">主页</div>\n" +
         "            </li>\n" +
@@ -27,7 +27,7 @@ function loadNavigation() {
 }
 
 //存储博客数据
-var blogdata;
+var blogdata =getDataFromCookie();
 
 function getData() {
     if(blogdata==null){
@@ -40,9 +40,20 @@ function getData() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    blogdata = JSON.parse(xhr.responseText);
-                    loadIndexCard();
-                    //刷新卡片
+                    if(isFromPath){
+                        dataTemp=xhr.responseText;
+                        saveDataToCookie(dataTemp);
+                        blogdata = JSON.parse(dataTemp);
+                        loadPathCard();
+                        //直接载入卡片
+                    }else {
+                        dataTemp=xhr.responseText;
+                        saveDataToCookie(dataTemp);
+                        blogdata = JSON.parse(dataTemp);
+                        loadIndexCard();
+                        //刷新卡片
+                    }
+
                 } else {
                     console.log(xhr.status);
                     console.log("笔记获取失败");
@@ -53,6 +64,23 @@ function getData() {
     return blogdata;
 }
 
+//应该就只在一开始的时候调用吧
+function getDataFromCookie() {
+    if(window.sessionStorage.blog != null){
+        console.log("sessionStorage如下");
+        console.log(window.sessionStorage.blog);
+        console.log("从sessionStorage当中找到数据");
+        return JSON.parse(window.sessionStorage.blog);
+    }else {
+        console.log("无法在sessionStorage当中找到博客数据");
+        return null;
+    }
+}
+
+function saveDataToCookie(blogData) {
+    window.sessionStorage.blog=blogData;
+    console.log("数据已经保存到sessionStorage了");
+}
 function loadIndexCard() {
     if(blogdata==null){
         getData()
@@ -72,7 +100,7 @@ function loadIndexCard() {
                     "    <div class=\"mdui-card-content mdui-typo mdui-p-l-4 mdui-p-r-4 mdui-p-t-0 mdui-p-b-0 \">"+marked(dataList[i].content.substring(0,300))+"</div>\n" +
 
                     "    <div class=\"mdui-card-actions\">\n" +
-                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\"  onclick=\"loadBlog(this,true)\">&#xe5d3;</i>\n" +
+                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\"  onclick=\"gotoPath('"+dataList[i].noteId+"')\">&#xe5d3;</i>\n" +
                     "    </div>\n" +
                     "</div>\n";
             }else {
@@ -87,7 +115,7 @@ function loadIndexCard() {
                     "    <div class=\"mdui-card-content mdui-typo mdui-p-l-4 mdui-p-r-4 mdui-p-t-0 mdui-p-b-0\">"+dataList[i].content.substring(0,300)+"</div>\n" +
 
                     "    <div class=\"mdui-card-actions\">\n" +
-                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\" onclick=\"loadBlog(this,true)\">&#xe5d3;</i>\n" +
+                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\" onclick=\"gotoPath('"+dataList[i].noteId+"')\">&#xe5d3;</i>\n" +
                     "    </div>\n" +
                     "</div>\n";
             }
@@ -95,6 +123,29 @@ function loadIndexCard() {
         }
     }
 
+}
+
+var isFromPath=false;
+//从路径访问本网页
+function loadPathCard(path) {
+    isFromPath=true;
+    if(blogdata==null){
+        //先去获取数据然后再回来
+        getData();
+    }else {
+        var noteid;
+        if(path==null){
+            noteid = document.location.pathname.replace("/","");
+        }else {
+            noteid = path;
+        }
+        var dataList = blogdata.dataList;
+        for(i=0;i<dataList.length;i++){
+            if(dataList[i].noteId==noteid){
+                loadBlog(dataList[i].createdTime);
+            }
+        }
+    }
 }
 
 function loadBlog(domOrCreateTime,isFormIndex) {
@@ -108,18 +159,19 @@ function loadBlog(domOrCreateTime,isFormIndex) {
     }else {
         createTime = domOrCreateTime;
     }
-
     var dataList = getData().dataList;
+    var priv;
+    var next;
     for(i=0;i<dataList.length;i++){
         if(dataList[i].createdTime == createTime){
             setBlogData(dataList[i]);
-            var priv;
+
             if(dataList[i-1] !=null){
                 priv=dataList[i-1].createdTime;
             }else {
                 priv="没有上一篇";
             }
-            var next;
+
             if(dataList[i+1] !=null){
                 next=dataList[i+1].createdTime;
             }else {
@@ -134,16 +186,24 @@ function loadBlog(domOrCreateTime,isFormIndex) {
         }
     }
 }
-var  scrollTemp =0;
+
+function show404() {
+
+}
+
 function hiddenIndex() {
-    scrollTemp= document.body.scrollTop;
+    // window.sessionStorage.scrollTemp= document.body.scrollTop;
     document.getElementById("card_container").style.display="none";
     console.log("hidden一次");
 }
-function showIndex() {
-    document.getElementById("card_container").style.display="block";
-    document.body.scrollTop=scrollTemp;
-}
+// function showIndex() {
+//     document.getElementById("card_container").style.display="block";
+//     if(window.sessionStorage.scrollTemp == null){
+//         document.body.scrollTop=0;
+//     }else {
+//         document.body.scrollTop=window.sessionStorage.scrollTemp;
+//     }
+// }
 
 function hiddenBlog() {
     document.getElementById("blog_container").style.display="none";
@@ -179,13 +239,20 @@ function setPrivAndNext(priv,next) {
     for(i=0;i<dataList.length;i++){
         if(dataList[i].createdTime == priv){
             privTitle.innerHTML=dataList[i].title;
-            privTitle.parentElement.setAttribute("onclick","loadBlog(\""+dataList[i].createdTime+"\",false)");
+            privTitle.parentElement.setAttribute("onclick","gotoPath(\""+dataList[i].noteId+"\")");
             console.log("找到priv")
         }
         if(dataList[i].createdTime == next){
             nextTitle.innerHTML=dataList[i].title;
-            nextTitle.parentElement.setAttribute("onclick","loadBlog(\""+dataList[i].createdTime+"\",false)");
+            nextTitle.parentElement.setAttribute("onclick","gotoPath(\""+dataList[i].noteId+"\")");
             console.log("找到next")
         }
     }
+}
+
+function gotoPath(path) {
+    if(window.location.pathname == "/"){
+        window.sessionStorage.scrollTemp= document.body.scrollTop;
+    }
+    window.location.href=path;
 }
