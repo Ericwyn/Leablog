@@ -72,7 +72,7 @@ function loadIndexCard() {
                     "    <div class=\"mdui-card-content mdui-typo mdui-p-l-4 mdui-p-r-4 mdui-p-t-0 mdui-p-b-0 \">"+marked(dataList[i].content.substring(0,300))+"</div>\n" +
 
                     "    <div class=\"mdui-card-actions\">\n" +
-                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\"  onclick=\"loadBlog(this)\">&#xe5d3;</i>\n" +
+                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\"  onclick=\"loadBlog(this,true)\">&#xe5d3;</i>\n" +
                     "    </div>\n" +
                     "</div>\n";
             }else {
@@ -87,7 +87,7 @@ function loadIndexCard() {
                     "    <div class=\"mdui-card-content mdui-typo mdui-p-l-4 mdui-p-r-4 mdui-p-t-0 mdui-p-b-0\">"+dataList[i].content.substring(0,300)+"</div>\n" +
 
                     "    <div class=\"mdui-card-actions\">\n" +
-                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\" onclick=\"loadBlog(this)\">&#xe5d3;</i>\n" +
+                    "        <i class=\"mdui-float-right mdui-icon material-icons mdui-ripple mdui-m-r-1\" onclick=\"loadBlog(this,true)\">&#xe5d3;</i>\n" +
                     "    </div>\n" +
                     "</div>\n";
             }
@@ -97,15 +97,38 @@ function loadIndexCard() {
 
 }
 
-function loadBlog(dom) {
-    var title = dom.parentNode.parentNode.childNodes[1].childNodes[1].innerText;
-    var createTime = dom.parentNode.parentNode.childNodes[1].childNodes[3].innerText;
-    console.log("点击查看"+title);
+function loadBlog(domOrCreateTime,isFormIndex) {
+    hiddenBlog();
+    var title;
+    var createTime;
+    if(isFormIndex){
+        title = domOrCreateTime.parentNode.parentNode.childNodes[1].childNodes[1].innerText;
+        createTime = domOrCreateTime.parentNode.parentNode.childNodes[1].childNodes[3].innerText;
+        console.log("点击查看"+title);
+    }else {
+        createTime = domOrCreateTime;
+    }
+
     var dataList = getData().dataList;
     for(i=0;i<dataList.length;i++){
         if(dataList[i].createdTime == createTime){
             setBlogData(dataList[i]);
-            hiddenIndex();
+            var priv;
+            if(dataList[i-1] !=null){
+                priv=dataList[i-1].createdTime;
+            }else {
+                priv="没有上一篇";
+            }
+            var next;
+            if(dataList[i+1] !=null){
+                next=dataList[i+1].createdTime;
+            }else {
+                next="没有下一篇";
+            }
+            setPrivAndNext(priv,next);
+            if(isFormIndex){
+                hiddenIndex();
+            }
             showBlog();
             break;
         }
@@ -136,5 +159,33 @@ function setBlogData(blog) {
         document.getElementById("blog_card").innerHTML=marked(blog.content);
     }else {
         document.getElementById("blog_card").innerHTML=blog.content;
+    }
+}
+
+function setPrivAndNext(priv,next) {
+    var privTime = document.getElementById("privTime");
+    privTime.innerHTML=priv;
+    var nextTime = document.getElementById("nextTime");
+    nextTime.innerHTML=next;
+    var privTitle = document.getElementById("privTitle");
+    privTitle.innerHTML="已到最前";
+    var nextTitle = document.getElementById("nextTitle");
+    nextTitle.innerHTML="已到最后";
+
+    var dataList = getData().dataList;
+    privTitle.parentElement.setAttribute("onclick","");
+    nextTitle.parentElement.setAttribute("onclick","");
+
+    for(i=0;i<dataList.length;i++){
+        if(dataList[i].createdTime == priv){
+            privTitle.innerHTML=dataList[i].title;
+            privTitle.parentElement.setAttribute("onclick","loadBlog(\""+dataList[i].createdTime+"\",false)");
+            console.log("找到priv")
+        }
+        if(dataList[i].createdTime == next){
+            nextTitle.innerHTML=dataList[i].title;
+            nextTitle.parentElement.setAttribute("onclick","loadBlog(\""+dataList[i].createdTime+"\",false)");
+            console.log("找到next")
+        }
     }
 }

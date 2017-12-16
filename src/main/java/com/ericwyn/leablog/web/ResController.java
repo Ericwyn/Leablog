@@ -45,6 +45,7 @@ public class ResController {
         }
         //初始化
         if(!init){
+            init=true;
             Thread getBlogThread =new Thread(new GetBlogThreadRun());
             getBlogThread.start();
             while (getBlogThread.isAlive()){
@@ -54,7 +55,6 @@ public class ResController {
                     e.printStackTrace();
                 }
             }
-            init=true;
             System.out.println("初始化完毕");
         }else {
             //判断时间

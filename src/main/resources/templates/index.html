@@ -28,14 +28,31 @@
     </div>
 
     <div class="mdui-container doc-container mdui-p-t-4" style="display: none;" id="blog_container">
-        <div class="mdui-card mdui-typo mdui-p-l-4 mdui-p-r-4" >
+        <div class="mdui-card mdui-typo mdui-p-l-4 mdui-p-r-4 mdui-p-t-4" >
             <div id="blog_card">
 
             </div>
-            <div class="mdui-card-actions">
-                <i class="mdui-float-right mdui-icon material-icons mdui-m-r-1" onclick="hiddenBlog();showIndex();">&#xe5c4;</i>
+        </div>
+        <div class="mdui-col-xs-12 mdui-p-r-1 mdui-m-t-2 mdui-m-b-2 mdui-p-l-0">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-float-left mdui-m-l-0 mdui-color-theme" onclick="hiddenBlog();showIndex();">返回主页</button>
+        </div>
+        <div class="mdui-col-xs-6 mdui-p-r-1 mdui-m-t-1 mdui-p-l-0">
+            <div class="mdui-card mdui-typo mdui-p-a-1 mdui-hoverable" >
+                <div class="mdui-card-primary-subtitle" >上一篇</div>
+                <div class="mdui-card-primary-title" id="privTitle"></div>
+                <div class="mdui-card-primary-subtitle" id="privTime"></div>
             </div>
         </div>
+        <div class="mdui-col-xs-6 mdui-p-l-1 mdui-m-t-1 mdui-p-r-0">
+            <div class="mdui-card mdui-typo mdui-p-a-1 mdui-hoverable" >
+                <div class="mdui-card-primary-subtitle" >下一篇</div>
+                <div class="mdui-card-primary-title" id="nextTitle"></div>
+
+                <div class="mdui-card-primary-subtitle" id="nextTime"></div>
+
+            </div>
+        </div>
+
     </div>
 </body>
 <script src="js/script.js"></script>

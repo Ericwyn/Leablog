@@ -7,7 +7,7 @@
 ## 配置文件相关
  - jar 目录下 `leablog.cfg`文件
  
-        api_url = https://localhost:9000/api    ; leanote api地址
+        API_URL = https://localhost:9000/api    ; leanote api地址
         MAIL = admin@leanote.com ; leanote 登录账号
         PASSWORD = password ; leanote 登录密码
         TIME_INTERVE = 10   ;   博客列表缓存的有效期，以分钟为单位
