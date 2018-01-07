@@ -11,3 +11,6 @@
         MAIL = admin@leanote.com ; leanote 登录账号
         PASSWORD = password ; leanote 登录密码
         TIME_INTERVE = 10   ;   博客列表缓存的有效期，以分钟为单位
+        API_TOKEN = null; 自动增加和保存的配置项，该行可不填写
+        USER_ID = null; 自动增加和保存的配置项，该行可不填写
+        USER_NAME = null; 自动增加和保存的配置项，该行可不填写

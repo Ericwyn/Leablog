@@ -41,7 +41,20 @@ public class ResController {
             api=new LeanoteApi();
         }
         if(apiToken==null){
-            apiToken=api.getToken(LeablogConfig.MAIL, LeablogConfig.PASSWORD);
+            if(LeablogConfig.API_TOKEN.equals("null")
+                    || LeablogConfig.USER_ID.equals("null")
+                    || LeablogConfig.USER_NAME.equals("null")){
+                apiToken=api.getToken(LeablogConfig.MAIL, LeablogConfig.PASSWORD);
+                LeablogConfig.updataLoginMsg(apiToken);
+            }else {
+                apiToken=new LoginMsg();
+                apiToken.setOk(true);
+                apiToken.setEmail(LeablogConfig.MAIL);
+                apiToken.setToken(LeablogConfig.API_TOKEN);
+                apiToken.setUserId(LeablogConfig.USER_ID);
+                apiToken.setUsername(LeablogConfig.USER_NAME);
+                System.out.println("成功从本地取得token");
+            }
         }
         //初始化
         if(!init){
@@ -90,7 +103,7 @@ public class ResController {
                         }
                     }
                     noteList = api.getNoteContent(apiToken, blogList);
-
+                    System.out.println("成功取回"+noteList.size()+"篇文章");
                     //排序
                     noteList.sort(new Comparator<NoteMsg>() {
                         @Override
