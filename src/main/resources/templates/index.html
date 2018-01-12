@@ -58,6 +58,39 @@
         </div>
 
     </div>
+
+
+    <div class="mdui-container doc-container mdui-m-t-3" style="display: none;" id="tag_container">
+
+    </div>
+
+    <div class="mdui-container doc-container mdui-m-t-3" id="archives_container">
+        <div class="mdui-typo">
+            <h1>2017</h1>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试</a></p>
+        </div>
+        <div class="mdui-typo">
+            <h1>2016</h1>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试标题标题标题</a></p>
+            <p class="mdui-m-l-2 mdui-p-t-0 mdui-p-b-0" style="font-size: 1.2em;line-height: 1.0;"><a href="aaa">测试</a></p>
+        </div>
+    </div>
+
 </body>
 <script src="js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jr-qrcode@1.1.0/dist/jr-qrcode.js"></script>
@@ -73,7 +106,16 @@
         if(window.sessionStorage.scrollTemp != null){
             document.body.scrollTop=window.sessionStorage.scrollTemp;
         }
-    }else {
+    }else if(path === "/tag"){
+        loadNavigation();
+        var inst=new mdui.Drawer('#drawer',{swipe:true});
+
+    }else if(path === "/archives"){
+        loadNavigation();
+        var inst=new mdui.Drawer('#drawer',{swipe:true});
+        loadArchives();
+    }
+    else {
         loadNavigation();
         var inst=new mdui.Drawer('#drawer',{swipe:true});
         loadPathCard(path.replace("/",""));

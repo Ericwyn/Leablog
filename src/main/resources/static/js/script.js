@@ -4,7 +4,7 @@ function loadNavigation() {
         "    <div class=\"mdui-drawer \" id=\"drawer\" >\n" +
         "        <ul class=\"mdui-list\">\n" +
         "            <li class=\"mdui-subheader\">博客</li>\n" +
-        "            <li class=\"mdui-list-item mdui-ripple\" onclick=\"gotoPath('/');document.body.scrollTop=0;\">\n" +
+        "            <li class=\"mdui-list-item mdui-ripple\" onclick=\"gotoPath(\'/\');document.body.scrollTop=0;\">\n" +
         "                <i class=\"mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue\">&#xe88a;</i>\n" +
         "                <div class=\"mdui-list-item-content\">主页</div>\n" +
         "            </li>\n" +
@@ -12,7 +12,7 @@ function loadNavigation() {
         "            <li class=\"mdui-list-item mdui-ripple\" onclick=\'goto_gallery()\'>\n" +
         "" +
         "                <i class=\"mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange\">&#xe865;</i>\n                <div class=\"mdui-list-item-content\">标签</div>\n" +
-        "            </li>\n            <li class=\"mdui-list-item mdui-ripple\" onclick=\'goto_gallery()\'>\n                <i class=\"mdui-list-item-icon mdui-icon material-icons mdui-text-color-green\">&#xe2c7;</i>\n                <div class=\"mdui-list-item-content\">归档</div>\n            </li>\n            \n" +
+        "            </li>\n            <li class=\"mdui-list-item mdui-ripple\" onclick=\'gotoPath(\'/archives\')\'>\n                <i class=\"mdui-list-item-icon mdui-icon material-icons mdui-text-color-green\">&#xe2c7;</i>\n                <div class=\"mdui-list-item-content\">归档</div>\n            </li>\n            \n" +
 
         "            <li class=\"mdui-subheader\">朋友</li>\n" +
 
@@ -149,7 +149,7 @@ function loadPathCard(path) {
 }
 
 function loadBlog(domOrCreateTime,isFormIndex) {
-    hiddenBlog();
+    hiddenOther();
     var title;
     var createTime;
     if(isFormIndex){
@@ -179,7 +179,7 @@ function loadBlog(domOrCreateTime,isFormIndex) {
             }
             setPrivAndNext(priv,next);
             if(isFormIndex){
-                hiddenIndex();
+                hiddenOther();
             }
             showBlog();
             break;
@@ -191,11 +191,12 @@ function show404() {
 
 }
 
-function hiddenIndex() {
-    // window.sessionStorage.scrollTemp= document.body.scrollTop;
-    document.getElementById("card_container").style.display="none";
-    console.log("hidden一次");
-}
+// function hiddenIndex() {
+//     // window.sessionStorage.scrollTemp= document.body.scrollTop;
+//     document.getElementById("card_container").style.display="none";
+//     console.log("hidden一次");
+// }
+
 // function showIndex() {
 //     document.getElementById("card_container").style.display="block";
 //     if(window.sessionStorage.scrollTemp == null){
@@ -205,8 +206,18 @@ function hiddenIndex() {
 //     }
 // }
 
-function hiddenBlog() {
+function showArchives() {
+    hiddenOther();
+
+
+}
+
+
+function hiddenOther() {
+    document.getElementById("card_container").style.display="none";
     document.getElementById("blog_container").style.display="none";
+    document.getElementById("card_container").style.display="none";
+
 }
 
 function showBlog() {
