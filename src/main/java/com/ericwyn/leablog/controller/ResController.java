@@ -1,27 +1,26 @@
-package com.ericwyn.leablog.web;
+package com.ericwyn.leablog.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.ericwyn.ezerver.SimpleHttpServer;
+import com.ericwyn.ezerver.handle.HandleMethod;
+import com.ericwyn.ezerver.request.Request;
+import com.ericwyn.ezerver.response.Response;
 import com.ericwyn.leablog.api.LeanoteApi;
 import com.ericwyn.leablog.api.entity.LoginMsg;
 import com.ericwyn.leablog.api.entity.NoteMsg;
 import com.ericwyn.leablog.tools.LeablogConfig;
 import com.ericwyn.leablog.tools.ResJson;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Ericwyn on 17-12-14.
  */
-@RestController
-@EnableAutoConfiguration
-public class ResController {
+
+public class ResController implements Controller{
     private static List<NoteMsg> noteList=new ArrayList<>();
     private static long lastUpdateTime=0;
     private static long timeInterve= 1000 * 60 * Integer.parseInt(LeablogConfig.TIME_INTERVE);
@@ -30,7 +29,18 @@ public class ResController {
 
     private boolean init=false;
 
-    @RequestMapping(path = "/allblog",method = RequestMethod.GET)
+    //匹配 /allblog 的请求，优先级高于 PageController 里面的正则表达式匹配
+    @Override
+    public void loadHandMethod(SimpleHttpServer.Builder builder) {
+        builder.addHandleMethod(new HandleMethod("/allblog") {
+            @Override
+            public void requestDo(Request request, Response response) throws IOException {
+                response.sendJsonData(JSON.toJSONString(getAllBlog()));
+                response.closeStream();
+            }
+        });
+    }
+
     public ResJson getAllBlog(){
         return ResJson.successJson("成功",getBlogList());
     }

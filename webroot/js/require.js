@@ -158,7 +158,7 @@ var requirejs, require, define;
 
     /**
      * Constructs an error with a pointer to an URL with more information.
-     * @param {String} id the error ID that maps to an ID on a web page.
+     * @param {String} id the error ID that maps to an ID on a controller page.
      * @param {String} message human readable error.
      * @param {Error} [err] the original error, if there is one.
      *
@@ -1965,9 +1965,9 @@ var requirejs, require, define;
             return node;
         } else if (isWebWorker) {
             try {
-                //In a web worker, use importScripts. This is not a very
+                //In a controller worker, use importScripts. This is not a very
                 //efficient use of importScripts, importScripts will block until
-                //its script is downloaded and evaluated. However, if web workers
+                //its script is downloaded and evaluated. However, if controller workers
                 //are in play, the expectation is that a build has been done so
                 //that only one script needs to be loaded anyway. This may need
                 //to be reevaluated if other use cases become common.

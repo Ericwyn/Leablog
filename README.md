@@ -1,8 +1,9 @@
 # LeaBlog
-一款利用java作为后台重写的Leanote 博客模块，只需要运行jar即可获得属于自己Leanote 博客。Leanote 无需特殊配置。
+一款利用 Ezerver 框架作为后台重写的Leanote 博客模块，只需要运行jar即可获得属于自己Leanote 博客。Leanote 无需特殊配置。
 
-博客地址:[Ericwyn's Blog](https://blog.meetwhy.com)
- 
+博客地址: [Ericwyn's Blog](https://blog.meetwhy.com)
+
+后台框架地址: [Ezerver](https://github.com/Ericwyn/Ezerver)
 
 ## 配置文件相关
  - jar 目录下 `leablog.cfg`文件
