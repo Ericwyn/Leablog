@@ -11,7 +11,7 @@ public class LeablogApplication {
 
 		// 新建 SimpleHttpServer Builder
 		SimpleHttpServer.Builder builder = new SimpleHttpServer.Builder()
-				.allowDebug()
+//				.allowDebug()
 				.setServerPort(2334);
 
 		// 载入实现了 loadHandleMethod 接口的 Controller ，作为 Controller 层

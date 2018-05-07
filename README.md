@@ -5,6 +5,21 @@
 
 后台框架地址: [Ezerver](https://github.com/Ericwyn/Ezerver)
 
+## 构建
+### 第一步
+
+    mvn clean package
+    
+生成的 jar 文件 `leablog-0.0.1-SNAPSHOT-jar-with-dependencies.jar`
+
+### 第二步
+
+将 jar 复制到工程目录下，使用如下命令
+
+    java -jar leablog-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+
+Leablog 将会运行在 `localhost:2334/`
+
 ## 配置文件相关
  - jar 目录下 `leablog.cfg`文件
  
